@@ -22,7 +22,6 @@ hostname = service.hhdd.com
 *
 */
 
-
 let body = $response.body;
 let obj = JSON.parse(body);
 
@@ -52,8 +51,20 @@ if (obj.data.bookSrt) {
     obj.data.bookSrt.srtShowFlag = 1;
 }
 
-obj.data.abilities = ["伴读", "拼音", "字卡", "答题", "朗读"];
+obj.data.abilities = ["伴读", "拼音", "字卡", "答题", "朗读", "听故事", "学知识"];
 obj.data.subscribeFlag = 1;
+
+// 解锁听故事功能
+if (obj.data.storyListening) {
+    obj.data.storyListening.unLock = true;
+    obj.data.storyListening.isVip = true;
+}
+
+// 解锁学知识功能
+if (obj.data.knowledgeLearning) {
+    obj.data.knowledgeLearning.unLock = true;
+    obj.data.knowledgeLearning.isVip = true;
+}
 
 if (obj.data.items && Array.isArray(obj.data.items)) {
     obj.data.items.forEach(item => {
@@ -62,6 +73,9 @@ if (obj.data.items && Array.isArray(obj.data.items)) {
         item.bookSvip = 0;
         item.trialReadingPages = item.pageCount;
         item.literacyTrialReadingPages = item.pageCount;
+        // 解锁项目中的听故事和学知识
+        item.storyListeningUnlock = true;
+        item.knowledgeLearningUnlock = true;
     });
 }
 
